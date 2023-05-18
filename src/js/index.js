@@ -1,6 +1,5 @@
 import "../sass/main.scss";
 
-
 import App from "./views/app";
 
 const app = new App({

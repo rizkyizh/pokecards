@@ -1,3 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Hind:wght@400;700&display=swap');
+
+*{
+  font-family: 'Hind', sans-serif;
+  word-wrap: none !important;
+}
+
 body{
   // background-color: #7289da;
   // background-color: #ee4e36;
@@ -10,4 +17,8 @@ body{
 
 #pokeCard {
   cursor: pointer;
+}
+
+#pokeCard:hover {
+  filter: grayscale(5);
 }
