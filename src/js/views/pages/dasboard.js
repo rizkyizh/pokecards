@@ -9,8 +9,8 @@ const Dasboard = {
         <h1 class="bg-warning p-2 text-center rounded-top-2 fs-3 bold">Daftar Pokemon</h1>
         <div id="pokeList" class="d-flex align-content-start flex-wrap"></div>
         <div class="bg-warning p-2 mt-2 text-center fs-3 bold">
-            <button type="button" class="btn w-10 btn-secondary btn-sm">Previous</button>
-            <button type="button" class="btn w-10 btn-secondary btn-sm">Next</button>
+            <button id="btn-previous" type="button" class="btn w-10 btn-secondary btn-sm">Previous</button>
+            <button id="btn-next" type="button" class="btn w-10 btn-secondary btn-sm">Next</button>
         </div>
       </div>`
   },
@@ -22,12 +22,30 @@ const Dasboard = {
   },
 
   async _initialData(){
-    //get poke list
-    const datas = await PokeApi.getNextAll(0);
     const pokeListEl = document.querySelector('#pokeList')
+
+    const btnNext = document.getElementById('btn-next')
+    const btnPrevious = document.getElementById('btn-previous')
+    let offset = 0;
+    btnNext.addEventListener('click', async () => {
+      if (offset >= 0) {
+        offset += 20;
+        const datas = await PokeApi.getNextAll(offset);
+        this._populatePokemonList(pokeListEl, datas);
+      }
+    })
+    btnPrevious.addEventListener('click', async () => {
+      if (offset >= 0 && offset > 19) {
+        offset -= 20;
+        const datas = await PokeApi.getNextAll(offset);
+        this._populatePokemonList(pokeListEl, datas);
+      }
+    })
     
+    const datas = await PokeApi.getNextAll(0);
     this._populatePokemonList(pokeListEl, datas);
-    this._afterPopulatePokemonList(pokeListEl)
+      this._afterPopulatePokemonList(pokeListEl)
+    //get poke list
   },
 
   _populatePokemonList(containerEl, pokes){
@@ -65,8 +83,14 @@ const Dasboard = {
         myModalAlternative.show()
       }
     });
-    console.log(document.querySelectorAll('#pokeCard'));
-  }
+  },
+
+  async _NextAndPreviousData(offset){
+    const datas = await PokeApi.getNextAll(offset);
+    const pokeListEl = document.querySelector('#pokeList')
+    this._populatePokemonList(pokeListEl, datas);
+    this._afterPopulatePokemonList(pokeListEl)
+  },
 
 
 }
